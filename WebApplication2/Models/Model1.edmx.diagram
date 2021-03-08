@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ab950d529952478d8d70b8e1732f697d" Name="Diagram1">
+        <EntityTypeShape EntityType="gestion_equipeModel.equipe" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_equipeModel.joueur" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_equipeModel.Reservation" Width="1.5" PointX="5.25" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_equipeModel.stade" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_equipeModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_equipeModel.Ville" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <AssociationConnector Association="gestion_equipeModel.FK_joueur_joueur" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_equipeModel.FK_Reservation_equipe" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_equipeModel.FK_Reservation_stade" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_equipeModel.FK_stade_Ville" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

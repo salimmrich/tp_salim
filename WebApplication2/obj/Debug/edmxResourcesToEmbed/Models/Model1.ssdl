@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="gestion_equipeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="equipe">
+    <Key>
+      <PropertyRef Name="equipe_id" />
+    </Key>
+    <Property Name="equipe_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="equipe_lib" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="joueur">
+    <Key>
+      <PropertyRef Name="joueur_id" />
+    </Key>
+    <Property Name="joueur_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Joueur_nom" Type="nvarchar" MaxLength="50" />
+    <Property Name="joueur_prenom" Type="nvarchar" MaxLength="50" />
+    <Property Name="age" Type="int" />
+    <Property Name="joueur_fk_equipe_id" Type="int" />
+  </EntityType>
+  <EntityType Name="Reservation">
+    <Key>
+      <PropertyRef Name="equipe_fk_id" />
+      <PropertyRef Name="stade_fk_id" />
+    </Key>
+    <Property Name="equipe_fk_id" Type="int" Nullable="false" />
+    <Property Name="stade_fk_id" Type="int" Nullable="false" />
+    <Property Name="date_reservation" Type="date" />
+  </EntityType>
+  <EntityType Name="stade">
+    <Key>
+      <PropertyRef Name="stade_id" />
+    </Key>
+    <Property Name="stade_id" Type="int" Nullable="false" />
+    <Property Name="stade_nom" Type="nvarchar" MaxLength="50" />
+    <Property Name="fk_ville_id" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Ville">
+    <Key>
+      <PropertyRef Name="ville_id" />
+    </Key>
+    <Property Name="ville_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ville_lib" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_joueur_joueur">
+    <End Role="equipe" Type="Self.equipe" Multiplicity="0..1" />
+    <End Role="joueur" Type="Self.joueur" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="equipe">
+        <PropertyRef Name="equipe_id" />
+      </Principal>
+      <Dependent Role="joueur">
+        <PropertyRef Name="joueur_fk_equipe_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reservation_equipe">
+    <End Role="equipe" Type="Self.equipe" Multiplicity="1" />
+    <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="equipe">
+        <PropertyRef Name="equipe_id" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="equipe_fk_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reservation_stade">
+    <End Role="stade" Type="Self.stade" Multiplicity="1" />
+    <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="stade">
+        <PropertyRef Name="stade_id" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="stade_fk_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_stade_Ville">
+    <End Role="Ville" Type="Self.Ville" Multiplicity="0..1" />
+    <End Role="stade" Type="Self.stade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ville">
+        <PropertyRef Name="ville_id" />
+      </Principal>
+      <Dependent Role="stade">
+        <PropertyRef Name="fk_ville_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="gestion_equipeModelStoreContainer">
+    <EntitySet Name="equipe" EntityType="Self.equipe" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="joueur" EntityType="Self.joueur" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reservation" EntityType="Self.Reservation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="stade" EntityType="Self.stade" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Ville" EntityType="Self.Ville" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_joueur_joueur" Association="Self.FK_joueur_joueur">
+      <End Role="equipe" EntitySet="equipe" />
+      <End Role="joueur" EntitySet="joueur" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reservation_equipe" Association="Self.FK_Reservation_equipe">
+      <End Role="equipe" EntitySet="equipe" />
+      <End Role="Reservation" EntitySet="Reservation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reservation_stade" Association="Self.FK_Reservation_stade">
+      <End Role="stade" EntitySet="stade" />
+      <End Role="Reservation" EntitySet="Reservation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_stade_Ville" Association="Self.FK_stade_Ville">
+      <End Role="Ville" EntitySet="Ville" />
+      <End Role="stade" EntitySet="stade" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="gestion_equipeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="equipe">
+    <Key>
+      <PropertyRef Name="equipe_id" />
+    </Key>
+    <Property Name="equipe_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="equipe_lib" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="joueur" Relationship="Self.FK_joueur_joueur" FromRole="equipe" ToRole="joueur" />
+    <NavigationProperty Name="Reservation" Relationship="Self.FK_Reservation_equipe" FromRole="equipe" ToRole="Reservation" />
+  </EntityType>
+  <EntityType Name="joueur">
+    <Key>
+      <PropertyRef Name="joueur_id" />
+    </Key>
+    <Property Name="joueur_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Joueur_nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="joueur_prenom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="age" Type="Int32" />
+    <Property Name="joueur_fk_equipe_id" Type="Int32" />
+    <NavigationProperty Name="equipe" Relationship="Self.FK_joueur_joueur" FromRole="joueur" ToRole="equipe" />
+  </EntityType>
+  <EntityType Name="Reservation">
+    <Key>
+      <PropertyRef Name="equipe_fk_id" />
+      <PropertyRef Name="stade_fk_id" />
+    </Key>
+    <Property Name="equipe_fk_id" Type="Int32" Nullable="false" />
+    <Property Name="stade_fk_id" Type="Int32" Nullable="false" />
+    <Property Name="date_reservation" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="equipe" Relationship="Self.FK_Reservation_equipe" FromRole="Reservation" ToRole="equipe" />
+    <NavigationProperty Name="stade" Relationship="Self.FK_Reservation_stade" FromRole="Reservation" ToRole="stade" />
+  </EntityType>
+  <EntityType Name="stade">
+    <Key>
+      <PropertyRef Name="stade_id" />
+    </Key>
+    <Property Name="stade_id" Type="Int32" Nullable="false" />
+    <Property Name="stade_nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fk_ville_id" Type="Int32" />
+    <NavigationProperty Name="Reservation" Relationship="Self.FK_Reservation_stade" FromRole="stade" ToRole="Reservation" />
+    <NavigationProperty Name="Ville" Relationship="Self.FK_stade_Ville" FromRole="stade" ToRole="Ville" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Ville">
+    <Key>
+      <PropertyRef Name="ville_id" />
+    </Key>
+    <Property Name="ville_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ville_lib" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="stade" Relationship="Self.FK_stade_Ville" FromRole="Ville" ToRole="stade" />
+  </EntityType>
+  <Association Name="FK_joueur_joueur">
+    <End Role="equipe" Type="Self.equipe" Multiplicity="0..1" />
+    <End Role="joueur" Type="Self.joueur" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="equipe">
+        <PropertyRef Name="equipe_id" />
+      </Principal>
+      <Dependent Role="joueur">
+        <PropertyRef Name="joueur_fk_equipe_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reservation_equipe">
+    <End Role="equipe" Type="Self.equipe" Multiplicity="1" />
+    <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="equipe">
+        <PropertyRef Name="equipe_id" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="equipe_fk_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reservation_stade">
+    <End Role="stade" Type="Self.stade" Multiplicity="1" />
+    <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="stade">
+        <PropertyRef Name="stade_id" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="stade_fk_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_stade_Ville">
+    <End Role="Ville" Type="Self.Ville" Multiplicity="0..1" />
+    <End Role="stade" Type="Self.stade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ville">
+        <PropertyRef Name="ville_id" />
+      </Principal>
+      <Dependent Role="stade">
+        <PropertyRef Name="fk_ville_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="gestion_equipeEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="equipe" EntityType="Self.equipe" />
+    <EntitySet Name="joueur" EntityType="Self.joueur" />
+    <EntitySet Name="Reservation" EntityType="Self.Reservation" />
+    <EntitySet Name="stade" EntityType="Self.stade" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Ville" EntityType="Self.Ville" />
+    <AssociationSet Name="FK_joueur_joueur" Association="Self.FK_joueur_joueur">
+      <End Role="equipe" EntitySet="equipe" />
+      <End Role="joueur" EntitySet="joueur" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reservation_equipe" Association="Self.FK_Reservation_equipe">
+      <End Role="equipe" EntitySet="equipe" />
+      <End Role="Reservation" EntitySet="Reservation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reservation_stade" Association="Self.FK_Reservation_stade">
+      <End Role="stade" EntitySet="stade" />
+      <End Role="Reservation" EntitySet="Reservation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_stade_Ville" Association="Self.FK_stade_Ville">
+      <End Role="Ville" EntitySet="Ville" />
+      <End Role="stade" EntitySet="stade" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

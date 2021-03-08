@@ -1,0 +1,51 @@
+﻿@model IEnumerable<WebApplication2.Models.joueur>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Joueur_nom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.joueur_prenom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.equipe.equipe_lib)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Joueur_nom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.joueur_prenom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.age)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.equipe.equipe_lib)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.joueur_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.joueur_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.joueur_id })
+        </td>
+    </tr>
+}
+
+</table>
